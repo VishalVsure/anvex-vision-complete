@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
+
 // user_id (primary key)
 // username
 // password_hash
@@ -17,17 +18,15 @@ import { useNavigate } from "react-router-dom";
 // created_at
 // updated_at
 
-export default function LoginPage() {
-  const Navigate = useNavigate();
-
-
+export default function SignUpPage() {
+  const Navigate = useNavigate();  
   return (
     <div className="flex items-center align-middle py-36">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Sign Up</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter the details to signup
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -48,14 +47,11 @@ export default function LoginPage() {
               <Input id="password" type="password" required />
             </div>
             <Button type="submit" className="w-full" onClick={()=> Navigate('/dash')}>
-              Login
+              Signup
             </Button>
             <Button variant="outline" className="w-full" onClick={()=> Navigate('/dash')}   >
-              Login with Google
+              Signup with Google
             </Button>
-          </div>
-          <div className="mt-4 text-center text-sm" onClick={()=>Navigate('/signup')}>
-            Don&apos;t have an account?{""}
           </div>
         </CardContent>
       </Card>
