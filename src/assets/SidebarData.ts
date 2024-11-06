@@ -17,7 +17,7 @@ const data = {
     },
     teams: [
       {
-        name: "VCS",
+        name: "Anvex Vision",
         logo: GalleryVerticalEnd,
         plan: "Enterprise",
       },
@@ -30,9 +30,10 @@ const data = {
     navMain: [
       {
         title: "People Management",
-        url: "#",
+        url: "/manage",
         icon: SquareTerminal,
         isActive: true,
+        items:[]
       },
       {
         title: "Video",
@@ -41,7 +42,7 @@ const data = {
         items: [
           {
             title: "Add Source",
-            url: "#",
+            url: "/mgmt",
           },
           {
             title: "Source Ruleset",
@@ -53,11 +54,13 @@ const data = {
         title: "Realtime Video Preview",
         url: "#",
         icon: BookOpen,
+        items:[]
       },
       {
         title: "Alarm Management",
         url: "#",
         icon: Settings2,
+        items:[]
       },
     ],
     projects: [

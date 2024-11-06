@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignUpPage() {
   const Navigate = useNavigate();  
   return (
-    <div className="flex items-center align-middle py-36">
+    <div className="py-36">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Sign Up</CardTitle>
