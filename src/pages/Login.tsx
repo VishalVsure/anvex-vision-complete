@@ -47,10 +47,10 @@ export default function LoginPage() {
               </div>
               <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full" onClick={()=> Navigate('/dash')}>
+            <Button type="submit" className="w-full" onClick={()=> Navigate('/dashboard')}>
               Login
             </Button>
-            <Button variant="outline" className="w-full" onClick={()=> Navigate('/dash')}   >
+            <Button variant="outline" className="w-full" onClick={()=> Navigate('/dashboard')}   >
               Login with Google
             </Button>
           </div>
