@@ -16,10 +16,9 @@ interface AccessTableProps {
 const AccessTable: FC<AccessTableProps> = ({ users }) => {
   return (
     <Table>
-        {/* <TableCaption>Access control</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">User ID</TableHead>
+            <TableHead>User ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Username</TableHead>

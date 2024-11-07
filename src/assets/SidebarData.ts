@@ -36,7 +36,7 @@ const data = {
         items: [
           {
             title: "Add Source",
-            url: "/mgmt",
+            url: "/add-source",
           },
           {
             title: "Source Ruleset",

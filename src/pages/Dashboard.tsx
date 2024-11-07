@@ -1,5 +1,5 @@
 export default function Dashboard() {
   return (
-    <>Yo homie</>
+    <>Please use the sidebar to view pages</>
   )
 }
