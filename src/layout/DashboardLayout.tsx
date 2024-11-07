@@ -28,7 +28,7 @@ export default function DashboardLayout() {
             </Breadcrumb>
           </div>
         </header>
-        <div className='px-4'>
+        <div className='px-6'>
         <Outlet/>
         </div>
       </SidebarInset>

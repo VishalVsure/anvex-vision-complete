@@ -1,5 +1,4 @@
 import {
-    AudioWaveform,
     BookOpen,
     Bot,
     Frame,
@@ -20,11 +19,6 @@ const data = {
         name: "Anvex Vision",
         logo: GalleryVerticalEnd,
         plan: "Enterprise",
-      },
-      {
-        name: "VICS",
-        logo: AudioWaveform,
-        plan: "Startup",
       },
     ],
     navMain: [

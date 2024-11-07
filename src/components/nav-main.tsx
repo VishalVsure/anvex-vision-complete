@@ -69,12 +69,12 @@ export function NavMain({
                 </>
               ) : (
                 <>
-                  <SidebarMenuButton key={item.title}>
-                    {item.icon && <item.icon/>}
-                    <a href={item.url}>
+                  <a href={item.url}>
+                    <SidebarMenuButton key={item.title}>
+                      {item.icon && <item.icon />}
                       <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                    </SidebarMenuButton>
+                  </a>
                 </>
               )}
             </SidebarMenuItem>
