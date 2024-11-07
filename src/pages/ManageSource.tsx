@@ -1,4 +1,5 @@
 import BasicSourceDetails from "@/components/BasicSourceDetails"
+import RulesetManage from "@/components/RulesetManage"
 
 const ManageSource = () => {
   return (
@@ -7,7 +8,7 @@ const ManageSource = () => {
     <br />
     <hr />
     <br />
-    
+    <RulesetManage/>
     </>
   )
 }
