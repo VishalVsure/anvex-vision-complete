@@ -8,6 +8,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RootState } from "@/state/store";
+import { set_user } from "@/state/user/UserSlice";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // user_id (primary key)
 // username
@@ -19,7 +23,20 @@ import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [mail, setMail] = useState("");
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const user = { username: "VCS", email: mail, token: "abcdg" };
+      dispatch(set_user(user));
+      Navigate("/dashboard");
+    } catch (err) {
+      console.log("ERROR: ", err);
+    }
+  };
 
   return (
     <div className="flex items-center align-middle py-36">
@@ -31,30 +48,45 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+          <form action="#" onSubmit={handleSubmit}>
+            <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  value={mail}
+                  onChange={(e) => setMail(e.target.value)} //
+                  required
+                />
               </div>
-              <Input id="password" type="password" required />
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                </div>
+                <Input id="password" type="password" required />
+              </div>
+              <Button
+                type="submit"
+                className="w-full"
+                // onClick={(e) => handleSubmit(e)}
+              >
+                Login
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => Navigate("/dashboard")}
+              >
+                Login with Google
+              </Button>
             </div>
-            <Button type="submit" className="w-full" onClick={()=> Navigate('/dashboard')}>
-              Login
-            </Button>
-            <Button variant="outline" className="w-full" onClick={()=> Navigate('/dashboard')}   >
-              Login with Google
-            </Button>
-          </div>
-          <div className="mt-4 text-center text-sm" onClick={()=>Navigate('/signup')}>
+          </form>
+          <div
+            className="mt-4 text-center text-sm"
+            onClick={() => Navigate("/signup")}
+          >
             Don&apos;t have an account?{""}
           </div>
         </CardContent>

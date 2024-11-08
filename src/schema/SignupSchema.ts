@@ -1,6 +1,4 @@
-const { z } = require("zod");
-
-//Creating an object schema
+import { z } from "zod";
 const signupSchema = z.object({
   username: z
     .string({ required_error: "Username is required" })
