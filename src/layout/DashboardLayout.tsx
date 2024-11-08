@@ -1,11 +1,18 @@
-import { AppSidebar } from '@/components/app-sidebar'
+import { AppSidebar } from "@/components/app-sidebar";
 // import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { Toaster } from '@/components/ui/sonner'
-import { Separator } from '@radix-ui/react-separator'
-import { Outlet } from 'react-router-dom'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
+import { Separator } from "@radix-ui/react-separator";
 
-export default function DashboardLayout() {
+interface DashboardLayoutProps {
+  children: React.ReactNode; // Ensure the children prop is passed down properly
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -29,11 +36,11 @@ export default function DashboardLayout() {
             </Breadcrumb> */}
           </div>
         </header>
-        <div className='px-6'>
-        <Toaster/>
-        <Outlet/>
+        <div className="px-6">
+          <Toaster />
+          {children}
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

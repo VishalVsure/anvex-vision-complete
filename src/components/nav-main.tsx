@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronRight, type LucideIcon } from "lucide-react";
-
 import {
   Collapsible,
   CollapsibleContent,
@@ -17,8 +16,10 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export function NavMain({
+const NavMain = ({
   items,
 }: {
   items: {
@@ -31,7 +32,40 @@ export function NavMain({
       url: string;
     }[];
   }[];
-}) {
+}) => {
+  const [openItems, setOpenItems] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const storedState = localStorage.getItem("collapsibleState");
+    if (storedState) {
+      setOpenItems(new Set(JSON.parse(storedState)));
+    }
+  }, []);
+  useEffect(() => {
+    if (openItems.size > 0) {
+      localStorage.setItem(
+        "collapsibleState",
+        JSON.stringify(Array.from(openItems))
+      );
+    } else {
+      localStorage.removeItem("collapsibleState");
+    }
+  }, [openItems]);
+
+  const handleToggle = (title: string) => {
+    setOpenItems((prevState) => {
+      const newState = new Set(prevState);
+      if (newState.has(title)) {
+        newState.delete(title);
+      } else {
+        newState.add(title);
+      }
+      return newState;
+    });
+  };
+
+  const navigate = useNavigate();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -40,7 +74,8 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
+            open={openItems.has(item.title)}
+            onOpenChange={() => handleToggle(item.title)}
             className="group/collapsible"
           >
             <SidebarMenuItem>
@@ -56,11 +91,13 @@ export function NavMain({
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubItem
+                          key={subItem.title}
+                          onClick={() => navigate(subItem.url)}
+                          className="cursor-pointer"
+                        >
                           <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </a>
+                            <span>{subItem.title}</span>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
@@ -69,12 +106,10 @@ export function NavMain({
                 </>
               ) : (
                 <>
-                  <a href={item.url}>
-                    <SidebarMenuButton key={item.title}>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                    </SidebarMenuButton>
-                  </a>
+                  <SidebarMenuButton onClick={() => navigate(item.url)}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
                 </>
               )}
             </SidebarMenuItem>
@@ -83,4 +118,5 @@ export function NavMain({
       </SidebarMenu>
     </SidebarGroup>
   );
-}
+};
+export default NavMain;
