@@ -9,7 +9,9 @@ export default function Dashboard() {
   return (
     <>
       <DashboardLayout>
-        {username},{email},{token}
+        {username.length > 0 && email.length > 0 && token.length > 0
+          ? `${username},${email},${token}`
+          : "Not logged in"}
         <p>Please use the sidebar to view pages</p>
       </DashboardLayout>
     </>
