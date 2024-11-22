@@ -1,7 +1,22 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import React from "react";
 
 const ManageAlarms = () => {
+  const sources = [
+    {
+      cam_id: "CAM001",
+      note: "Main Entrance Camera",
+      protocol: "rtsp",
+      url: "rtsp://192.168.1.101:554/stream1",
+    },
+  ];
   return (
     <>
       <div>Alarm Management</div>
