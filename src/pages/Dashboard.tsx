@@ -35,39 +35,32 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
-  const [webhookData, setWebhookData] = useState(null);
-
-  useEffect(() => {
-    // Connect to the socket.io server
-    const socket = io("http://localhost:3000", {
-      withCredentials: true,
-      transports: ["websocket"],
-    });
-
-    // Listen for 'webhookData' event
-    socket.on("webhookData", (webhookData) => {
-      console.log("Received webhook data:", webhookData);
-      setWebhookData(webhookData); // Update your state with the data
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const [webhookData, setWebhookData] = useState({
+    total_person_count: 0,
+    person_entered: 0,
+    person_exited: 0,
+    male_count: 0,
+    female_count: 0,
+  });
 
   const [barChartData, setBarChartData] = useState({
     labels: [
       "Total Person Count",
-      "Total Male Count",
-      "Total Female Count",
       "Entry Person Count",
       "Exit Person Count",
-      ,
+      "Total Male Count",
+      "Total Female Count",
     ],
     datasets: [
       {
         label: "Detection Stats",
-        data: Array.from({ length: 6 }, () => Math.floor(Math.random() * 10)),
+        data: [
+          webhookData.total_person_count,
+          webhookData.person_entered,
+          webhookData.person_exited,
+          webhookData.male_count,
+          webhookData.female_count,
+        ],
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)", // Red
           "rgba(54, 162, 235, 0.6)", // Blue
@@ -89,15 +82,21 @@ export default function Dashboard() {
   const [pieChartData, setPieChartData] = useState({
     labels: [
       "Total Person Count",
-      "Total Male Count",
-      "Total Female Count",
       "Entry Person Count",
       "Exit Person Count",
+      "Total Male Count",
+      "Total Female Count",
     ],
     datasets: [
       {
         label: "Categories",
-        data: [40, 60, 10, 20, 30],
+        data: [
+          webhookData.total_person_count,
+          webhookData.person_entered,
+          webhookData.person_exited,
+          webhookData.male_count,
+          webhookData.female_count,
+        ],
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)", // Red
           "rgba(54, 162, 235, 0.6)", // Blue
@@ -121,116 +120,119 @@ export default function Dashboard() {
   const [tableData, setTableData] = useState([
     {
       total_person_count: 0,
-      total_male_count: 0,
-      total_female_count: 0,
-      enter_person_count: 0,
-      exit_person_count: 0,
-    },
-    {
-      total_person_count: 0,
-      total_male_count: 0,
-      total_female_count: 0,
-      enter_person_count: 0,
-      exit_person_count: 0,
+      person_entered: 0,
+      person_exited: 0,
+      male_count: 0,
+      female_count: 0,
     },
   ]);
 
-  // Function to simulate data update (can replace with actual API or live data)
-  const getRandomData = () => {
-    return {
-      barChart: {
-        labels: [
-          "Total Person Count",
-          "Total Male Count",
-          "Total Female Count",
-          "Entry Person Count",
-          "Exit Person Count",
-        ],
-        datasets: [
-          {
-            label: "Detection Stats",
-            data: Array.from({ length: 6 }, () =>
-              Math.floor(Math.random() * 10)
-            ),
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.6)", // Red
-              "rgba(54, 162, 235, 0.6)", // Blue
-              "rgba(255, 206, 86, 0.6)", // Yellow
-              "rgba(75, 192, 192, 0.6)", // Teal
-              "rgba(153, 102, 255, 0.6)", // Purple
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 0.6)", // Red
-              "rgba(54, 162, 235, 0.6)", // Blue
-              "rgba(255, 206, 86, 0.6)", // Yellow
-              "rgba(75, 192, 192, 0.6)", // Teal
-              "rgba(153, 102, 255, 0.6)", // Purple
-            ],
-            borderWidth: 1,
-          },
-        ],
-      },
-      pieChart: {
-        labels: [
-          "Total Person Count",
-          "Total Male Count",
-          "Total Female Count",
-          "Entry Person Count",
-          "Exit Person Count",
-        ],
-        datasets: [
-          {
-            label: "Detection Stats",
-            data: Array.from({ length: 6 }, () =>
-              Math.floor(Math.random() * 10)
-            ),
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.6)", // Red
-              "rgba(54, 162, 235, 0.6)", // Blue
-              "rgba(255, 206, 86, 0.6)", // Yellow
-              "rgba(75, 192, 192, 0.6)", // Teal
-              "rgba(153, 102, 255, 0.6)", // Purple
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 0.6)", // Red
-              "rgba(54, 162, 235, 0.6)", // Blue
-              "rgba(255, 206, 86, 0.6)", // Yellow
-              "rgba(75, 192, 192, 0.6)", // Teal
-              "rgba(153, 102, 255, 0.6)", // Purple
-            ],
-            borderWidth: 1,
-          },
-        ],
-      },
-      tableData: [
-        {
-          total_person_count: Math.floor(Math.random() * 10),
-          total_male_count: Math.floor(Math.random() * 10),
-          total_female_count: Math.floor(Math.random() * 10),
-          enter_person_count: Math.floor(Math.random() * 10),
-          exit_person_count: Math.floor(Math.random() * 10),
-        },
-        {
-          total_person_count: Math.floor(Math.random() * 10),
-          total_male_count: Math.floor(Math.random() * 10),
-          total_female_count: Math.floor(Math.random() * 10),
-          enter_person_count: Math.floor(Math.random() * 10),
-          exit_person_count: Math.floor(Math.random() * 10),
-        },
-      ],
-    };
-  };
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      const newData = getRandomData(); // Simulate fetching new data
-      setBarChartData(newData.barChart);
-      setPieChartData(newData.pieChart);
-      setTableData(newData.tableData); // Update table data along with charts
-    }, 1000); // Update every 5 seconds (5000ms)
+    // Connect to the socket.io server
+    const socket = io("https://vision-webhook.onrender.com", {
+      withCredentials: true,
+      transports: ["websocket"],
+    });
 
-    return () => clearInterval(interval);
-  }, []);
+    // Listen for 'webhookData' event
+    socket.on("webhookData", (webhookData) => {
+      console.log("Received webhook data:", webhookData);
+      setWebhookData(webhookData); // Update your state with the data
+
+      // Update chart and table data
+      setBarChartData({
+        labels: [
+          "Total Person Count",
+          "Entry Person Count",
+          "Exit Person Count",
+          "Total Male Count",
+          "Total Female Count",
+        ],
+        datasets: [
+          {
+            label: "Detection Stats",
+            data: [
+              webhookData.total_person_count,
+              webhookData.person_entered,
+              webhookData.person_exited,
+              webhookData.male_count,
+              webhookData.female_count,
+            ],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      });
+
+      setPieChartData({
+        labels: [
+          "Total Person Count",
+          "Entry Person Count",
+          "Exit Person Count",
+          "Total Male Count",
+          "Total Female Count",
+        ],
+        datasets: [
+          {
+            label: "Categories",
+            data: [
+              webhookData.total_person_count,
+              webhookData.person_entered,
+              webhookData.person_exited,
+              webhookData.male_count,
+              webhookData.female_count,
+            ],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(255, 206, 86, 0.6)",
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      });
+
+      setTableData([
+        {
+          total_person_count: webhookData.total_person_count,
+          person_entered: webhookData.person_entered,
+          person_exited: webhookData.person_exited,
+          male_count: webhookData.male_count,
+          female_count: webhookData.female_count,
+        },
+      ]);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Connection error:", err);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []); // Only run once, on mount and unmount
 
   const barChartOptions = {
     plugins: {
@@ -317,16 +319,16 @@ export default function Dashboard() {
                     Total Person Count
                   </TableHead>
                   <TableHead className="font-semibold text-gray-600">
-                    Total Male Count
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-600">
-                    Total Female Count
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-600">
                     Entry Person Count
                   </TableHead>
                   <TableHead className="font-semibold text-gray-600">
                     Exit Person Count
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-600">
+                    Total Male Count
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-600">
+                    Total Female Count
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -334,10 +336,10 @@ export default function Dashboard() {
                 {tableData.map((row, index) => (
                   <TableRow key={index}>
                     <TableCell>{row.total_person_count}</TableCell>
-                    <TableCell>{row.total_male_count}</TableCell>
-                    <TableCell>{row.total_female_count}</TableCell>
-                    <TableCell>{row.enter_person_count}</TableCell>
-                    <TableCell>{row.exit_person_count}</TableCell>
+                    <TableCell>{row.person_entered}</TableCell>
+                    <TableCell>{row.person_exited}</TableCell>
+                    <TableCell>{row.male_count}</TableCell>
+                    <TableCell>{row.female_count}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
