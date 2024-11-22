@@ -52,7 +52,7 @@ const data = {
       },
       {
         title: "Alarm Management",
-        url: "#",
+        url: "/alarms",
         icon: Settings2,
         items:[]
       },
