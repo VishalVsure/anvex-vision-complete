@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 // password_hash
 // email
 // role (e.g., 'admin', 'user', 'operator')
-// created_at
+// created_atp
 // updated_at
 
 export default function LoginPage() {
