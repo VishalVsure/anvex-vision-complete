@@ -91,7 +91,7 @@ interface SidebarData {
 
 export const sidebarData: SidebarData[] = [
   { title: "People Management", slug: "manage", icon: faUsers },
-  { title: "Face Ids", slug: "face-ids", icon: faUserCircle },
+  { title: "Face IDs", slug: "face-ids", icon: faUserCircle },
   { title: "Add Video Source", slug: "add-source", icon: faPlusCircle },
   { title: "Source Ruleset", slug: "source", icon: faCog },
   { title: "Realtime Video Preview", slug: "dashboard", icon: faVideo },
