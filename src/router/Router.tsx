@@ -10,7 +10,7 @@ import ManageAlarms from "@/pages/ManageAlarms";
 import PrivateRoute from "./PrivateRoute";
 import LogoutPage from "@/pages/LogoutPage";
 import AboutUs from "@/pages/AboutUs";
-import { Faces } from "@/pages/Faces";
+import Faces from "@/pages/Faces";
 
 const Router: React.FC = () => (
   <Routes>

@@ -1,10 +1,10 @@
 import { SetStateAction, useState } from "react";
 
 export default function VideoPreview() {
-  const [mainVideo, setMainVideo] = useState("fire_detection.mp4");
+  const [mainVideo, setMainVideo] = useState("vehicle_detection_2.mp4");
   const [otherVideos, setOtherVideos] = useState([
     "Object_Detection.mp4",
-    "vehicle_detection.mp4",
+    "fire_detection.mp4",
     "http://localhost:5000/video_feed",
   ]);
 
@@ -24,7 +24,7 @@ export default function VideoPreview() {
             autoPlay
             loop
             muted
-            className="w-full h-[500px] object-cover rounded-lg shadow"
+            className="w-full h-[500px] object-fill rounded-lg shadow"
           >
             <source src={mainVideo} type="video/mp4" />
             Your browser does not support the video tag.
@@ -47,7 +47,7 @@ export default function VideoPreview() {
                 autoPlay
                 loop
                 muted
-                className="w-full h-[150px] object-cover rounded-lg shadow"
+                className="w-full h-[150px] object-fill rounded-lg shadow"
                 onClick={() => swapVideo(video)}
               >
                 <source src={video} type="video/mp4" />
@@ -57,7 +57,7 @@ export default function VideoPreview() {
               <img
                 src={video}
                 alt="Thumbnail"
-                className="w-full h-[150px] object-cover rounded-lg shadow"
+                className="w-full h-[150px] object-fill rounded-lg shadow"
                 onClick={() => swapVideo(video)}
               />
             )}
