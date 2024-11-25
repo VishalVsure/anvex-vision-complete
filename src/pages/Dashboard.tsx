@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import VideoPreview from "@/components/VideoPreview";
+import DashboardLayout from "@/layout/DashboardLayout";
 
 // Register Chart.js components
 ChartJS.register(
@@ -279,74 +280,78 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="mb-8">
-        <VideoPreview />
-      </div>
-      <div className="w-full px-4">
-        <div className="flex w-full justify-between gap-4 mb-8">
-          <Card className="w-1/2 p-6 shadow-xl rounded-lg bg-white hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Detection Stats Overview
-            </h2>
-            <Bar
-              data={barChartData}
-              options={barChartOptions}
-              width={600}
-              height={400}
-            />
-          </Card>
-          <Card className="w-1/2 p-6 shadow-xl rounded-lg bg-white hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Detection Category Distribution
-            </h2>
-            <Pie data={pieChartData} options={pieOptions} />
-          </Card>
-        </div>
+      <DashboardLayout>
+        <div className="p-4">
+          <div className="mb-8">
+            <VideoPreview />
+          </div>
+          <div className="w-full px-4">
+            <div className="flex w-full justify-between gap-4 mb-8">
+              <Card className="w-1/2 p-6 shadow-xl rounded-lg bg-white hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                  Detection Stats Overview
+                </h2>
+                <Bar
+                  data={barChartData}
+                  options={barChartOptions}
+                  width={600}
+                  height={400}
+                />
+              </Card>
+              <Card className="w-1/2 p-6 shadow-xl rounded-lg bg-white hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                  Detection Category Distribution
+                </h2>
+                <Pie data={pieChartData} options={pieOptions} />
+              </Card>
+            </div>
 
-        {/* Tables Section */}
-        <div className="grid grid-cols-1 gap-6 mb-8">
-          {/* Table 1 */}
-          <div className="p-6 shadow-lg rounded-lg bg-white">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Person Detection
-            </h3>
-            <Table className="w-full">
-              {" "}
-              {/* Added w-full here to make the table take full width */}
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="font-semibold text-gray-600">
-                    Total Person Count
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-600">
-                    Entry Person Count
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-600">
-                    Exit Person Count
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-600">
-                    Total Male Count
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-600">
-                    Total Female Count
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {tableData.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{row.total_person_count}</TableCell>
-                    <TableCell>{row.person_entered}</TableCell>
-                    <TableCell>{row.person_exited}</TableCell>
-                    <TableCell>{row.male_count}</TableCell>
-                    <TableCell>{row.female_count}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            {/* Tables Section */}
+            <div className="grid grid-cols-1 gap-6 mb-8">
+              {/* Table 1 */}
+              <div className="p-6 shadow-lg rounded-lg bg-white">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Person Detection
+                </h3>
+                <Table className="w-full">
+                  {" "}
+                  {/* Added w-full here to make the table take full width */}
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="font-semibold text-gray-600">
+                        Total Person Count
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-600">
+                        Entry Person Count
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-600">
+                        Exit Person Count
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-600">
+                        Total Male Count
+                      </TableHead>
+                      <TableHead className="font-semibold text-gray-600">
+                        Total Female Count
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {tableData.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{row.total_person_count}</TableCell>
+                        <TableCell>{row.person_entered}</TableCell>
+                        <TableCell>{row.person_exited}</TableCell>
+                        <TableCell>{row.male_count}</TableCell>
+                        <TableCell>{row.female_count}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </DashboardLayout>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { z } from "zod";
-const signupSchema = z.object({
+
+export const signupSchema = z.object({
   username: z
     .string({ required_error: "Username is required" })
     .trim()
@@ -22,5 +23,3 @@ const signupSchema = z.object({
     })
     .max(255, { message: "Password must not be more than 1024 chars long" }),
 });
-
-module.exports = signupSchema;        

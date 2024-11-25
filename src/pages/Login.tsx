@@ -8,37 +8,74 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { set_user } from "@/state/user/UserSlice";
+// import { set_user } from "@/state/user/UserSlice";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// user_id (primary key)
-// username
-// password_hash
-// email
-// role (e.g., 'admin', 'user', 'operator')
-// created_atp
-// updated_at
+import bcrypt from "bcryptjs";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
-  const Navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [mail, setMail] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    // setIsLoading(true);
+    const loader = toast.loading("Signing you in...");
     try {
-      const user = { username: "VCS", email: mail, token: "abcdg" };
-      dispatch(set_user(user));
-      Navigate("/dashboard");
-    } catch (err) {
-      console.log("ERROR: ", err);
+      const range = "Auth!A2:Z"; // Adjust the range to include all necessary data
+      const res = await axios.get(
+        "https://anvex-akila-demo.onrender.com/api/sheets/read",
+        {
+          params: { email, range },
+        }
+      );
+
+      // console.log("Response Data:", res.data); // Log the response to see its structure
+
+      if (res.status === 200 && res.data) {
+        const users = res.data.data; // Access the data array from the response
+        // Filter users by email
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const filteredUsers = users.filter((user: any) => user[0] === email); // user[0] is the email
+
+        if (filteredUsers.length > 0) {
+          const user = filteredUsers[0]; // Assuming we expect one match
+          const isMatch = await bcrypt.compare(password, user[1]); // user[1] is the password
+
+          if (isMatch) {
+            console.log("Login successful");
+            localStorage.setItem("email", user[0]);
+            localStorage.setItem("isLogin", "true");
+            toast.remove(loader);
+            toast.success("Signed in");
+            navigate("/dashboard");
+          } else {
+            console.log("Invalid password");
+            toast.remove(loader);
+            toast.error("Please check your password");
+            // alert("Invalid password");
+          }
+        } else {
+          console.log("User not found");
+          toast.remove(loader);
+          toast.error("Sorry! You do not have access to the dashboard");
+
+          // alert("User not found");
+        }
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Error during login");
     }
   };
 
   return (
-    <div className="flex items-center align-middle py-36">
+    <div className="flex items-center align-middle">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -47,7 +84,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action="#" onSubmit={handleSubmit}>
+          <form action="#" onSubmit={handleLogin}>
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -55,8 +92,8 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  value={mail}
-                  onChange={(e) => setMail(e.target.value)} //
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)} //
                   required
                 />
               </div>
@@ -64,7 +101,13 @@ export default function LoginPage() {
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
               <Button
                 type="submit"
@@ -73,21 +116,8 @@ export default function LoginPage() {
               >
                 Login
               </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => Navigate("/dashboard")}
-              >
-                Login with Google
-              </Button>
             </div>
           </form>
-          <div
-            className="mt-4 text-center text-sm"
-            onClick={() => Navigate("/signup")}
-          >
-            Don&apos;t have an account?{""}
-          </div>
         </CardContent>
       </Card>
     </div>
