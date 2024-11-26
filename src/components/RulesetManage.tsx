@@ -5,14 +5,25 @@ import Rule from "@/interfaces/RulesetInterface";
 import { useState } from "react";
 
 const initialRules: Rule[] = [
-  { id: "1", rulename: "Vehicle Counting", value: false },
-  { id: "2", rulename: "PPE detection", value: false },
-  { id: "3", rulename: "Face Emotion Recognition", value: false },
-  { id: "4", rulename: "Person Gender Recognition", value: false },
-  { id: "5", rulename: "Object Detection", value: false },
-  { id: "6", rulename: "Person Counting", value: false },
-  { id: "7", rulename: "Unattended Baggage Detection", value: false },
-  { id: "8", rulename: "Unique Visitors", value: false },
+  { id: "1", rulename: "Person Detection & Total Counting", value: false },
+  { id: "2", rulename: "Gender Detection", value: false },
+  { id: "3", rulename: "Facial Emotion Detection", value: false },
+  { id: "4", rulename: "Vehicle Detection", value: false },
+  { id: "5", rulename: "Fire & Smoke Detection", value: false },
+  { id: "6", rulename: "Unattended Bag Detection", value: false },
+  { id: "7", rulename: "PPE Detection", value: false },
+  { id: "8", rulename: "Fall Detection", value: false },
+  { id: "9", rulename: "Face Mask Detection at hospital", value: false },
+  { id: "10", rulename: "Wrong way Detection", value: false },
+  { id: "11", rulename: "Gun Detection", value: false },
+  { id: "12", rulename: "Object Detection", value: false },
+  { id: "13", rulename: "Person Attention Mechanism", value: false },
+  {
+    id: "14",
+    rulename: "PPE Kit detection at Construction site",
+    value: false,
+  },
+  { id: "15", rulename: "ANPR", value: false },
 ];
 
 const RulesetManage = () => {
@@ -31,7 +42,7 @@ const RulesetManage = () => {
       <p className="text-xl font-semibold pb-6">Ruleset Setting</p>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {rules.map((rule) => (
-          <div key={rule.id} className="flex gap-4 w-full">
+          <div key={rule.id} className="flex gap-4 w-full whitespace-nowrap">
             {rule.value ? (
               <Toggle
                 className="border"
