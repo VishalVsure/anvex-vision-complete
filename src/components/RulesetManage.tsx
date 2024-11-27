@@ -24,6 +24,8 @@ const initialRules: Rule[] = [
     value: false,
   },
   { id: "15", rulename: "ANPR", value: false },
+  { id: "16", rulename: "Unique number of Person", value: false },
+  { id: "17", rulename: "Helmet detection", value: false },
 ];
 
 const RulesetManage = () => {

@@ -43,7 +43,7 @@ export default function SignUpPage() {
     }
     console.log(signupSchema.safeParse({ email, password }));
 
-    Navigate("/login");
+    Navigate("/");
   };
 
   const Navigate = useNavigate();

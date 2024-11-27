@@ -16,8 +16,8 @@ const Router: React.FC = () => (
   <Routes>
     <Route path="/" element={<App />} />
     <Route path="/login" element={<LoginPage />} />
+    <Route path="/chamber" element={<SignUpPage />} />
     <Route element={<PrivateRoute />}>
-      <Route path="/chamber" element={<SignUpPage />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/manage" element={<Management />} />
       <Route path="/source" element={<ManageSource />} />
