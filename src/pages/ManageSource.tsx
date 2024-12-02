@@ -8,20 +8,22 @@ const ManageSource = () => {
   return (
     <>
       <DashboardLayout>
-        <p className="text-2xl font-semibold pb-4">Camera Configuration</p>
-        <BasicSourceDetails />
-        <br />
-        <hr />
-        <br />
-        <RulesetManage />
-        <div className="flex justify-end py-4 ">
-          <Button
-            onClick={() => {
-              toast("Camera Rules saved");
-            }}
-          >
-            Save
-          </Button>
+        <div className="p-4">
+          <p className="text-2xl font-semibold pb-4">Camera Configuration</p>
+          <BasicSourceDetails />
+          <br />
+          <hr />
+          <br />
+          <RulesetManage />
+          <div className="flex justify-end py-4 ">
+            <Button
+              onClick={() => {
+                toast("Camera Rules saved");
+              }}
+            >
+              Save
+            </Button>
+          </div>
         </div>
       </DashboardLayout>
     </>

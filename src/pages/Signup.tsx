@@ -6,38 +6,44 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import bcrypt from "bcryptjs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { signupSchema } from "@/schema/SignupSchema";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import signupSchema from "../schema/SignupSchema";
-
-// user_id (primary key)
-// username
-// password_hash
-// email
-// role (e.g., 'admin', 'user', 'operator')
-// created_at
-// updated_at
+import axios from "axios";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCpassword] = useState("");
-  const [username, setUsername] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("submit");
-    const user = {
-      username: username,
-      password: password,
-      email: email,
-    };
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const range = "Auth!A2";
+      const row = [email, hashedPassword];
+      const values = [row];
+      const res = await axios.post(
+        "https://anvex-akila-demo.onrender.com/api/sheets/create",
+        {
+          range,
+          values,
+        }
+      );
 
-    console.log(signupSchema.safeParse(user));
+      if (res.status == 200) {
+        console.log("user added");
+      }
+    } catch (error) {
+      console.log("error ", error);
+    }
+    console.log(signupSchema.safeParse({ email, password }));
 
-    Navigate("/dashboard");
+    Navigate("/");
   };
 
   const Navigate = useNavigate();
@@ -59,17 +65,6 @@ export default function SignUpPage() {
                   placeholder="m@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Username</Label>
-                <Input
-                  id="username"
-                  type="username"
-                  placeholder="Example"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
