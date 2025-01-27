@@ -1,27 +1,19 @@
 import { useState, useEffect } from "react";
-import { Bar, Pie } from "react-chartjs-2";
 import io from "socket.io-client";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
+  PointElement, // Register PointElement
+  LineElement, // Register LineElement
   Title,
   Tooltip,
   Legend,
   ArcElement,
   ChartOptions,
 } from "chart.js";
-import { Card } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import VideoPreview from "@/components/VideoPreview";
+import VideoPreviewWithCharts from "@/components/VideoPreview";
 import DashboardLayout from "@/layout/DashboardLayout";
 
 // Register Chart.js components
@@ -29,10 +21,12 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  ArcElement,
+  PointElement, // Register PointElement
+  LineElement, // Register LineElement
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 export default function Dashboard() {
@@ -80,42 +74,51 @@ export default function Dashboard() {
       },
     ],
   });
-  const [pieChartData, setPieChartData] = useState({
+  const [lineChartData] = useState({
     labels: [
-      "Total Person Count",
-      "Entry Person Count",
-      "Exit Person Count",
-      "Total Male Count",
-      "Total Female Count",
+      "January", // Example labels for months or time periods
+      "February",
+      "March",
+      "April",
+      "May",
     ],
     datasets: [
       {
-        label: "Categories",
-        data: [
-          webhookData.total_person_count,
-          webhookData.person_entered,
-          webhookData.person_exited,
-          webhookData.male_count,
-          webhookData.female_count,
-        ],
+        label: "Person Count Over Time", // Customize the label
+        data: [100, 200, 150, 175, 250], // Static data for the line chart
+        fill: true, // Disable fill
+        borderColor: "rgba(75, 192, 192, 1)", // Line color
+        tension: 0.1, // Line smoothing
+      },
+    ],
+  });
+
+  // 2nd Bar Chart Data
+  const sampleBarChartData = {
+    labels: ["January", "February", "March", "April", "May"],
+    datasets: [
+      {
+        label: "Crowd Detection Stats",
+        data: [50, 30, 20, 25, 25], // Example numbers
         backgroundColor: [
-          "rgba(255, 99, 132, 0.6)", // Red
-          "rgba(54, 162, 235, 0.6)", // Blue
-          "rgba(255, 206, 86, 0.6)", // Yellow
-          "rgba(75, 192, 192, 0.6)", // Teal
-          "rgba(153, 102, 255, 0.6)", // Purple
+          // Assign colors dynamically based on data values
+          "rgba(255, 99, 132, 0.6)", // Example for "Total Person Count"
+          "rgba(54, 162, 235, 0.6)", // Example for "Entry Person Count"
+          "rgba(255, 206, 86, 0.6)", // Example for "Exit Person Count"
+          "rgba(75, 192, 192, 0.6)", // Example for "Male Count"
+          "rgba(153, 102, 255, 0.6)", // Example for "Female Count"
         ],
         borderColor: [
-          "rgba(255, 99, 132, 0.6)", // Red
-          "rgba(54, 162, 235, 0.6)", // Blue
-          "rgba(255, 206, 86, 0.6)", // Yellow
-          "rgba(75, 192, 192, 0.6)", // Teal
-          "rgba(153, 102, 255, 0.6)", // Purple
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
         ],
         borderWidth: 1,
       },
     ],
-  });
+  };
 
   // Table data
   const [tableData, setTableData] = useState([
@@ -127,7 +130,7 @@ export default function Dashboard() {
       female_count: 0,
     },
   ]);
-
+  console.log(tableData);
   useEffect(() => {
     // Connect to the socket.io server
     const socket = io("https://vision-webhook.onrender.com", {
@@ -152,43 +155,6 @@ export default function Dashboard() {
         datasets: [
           {
             label: "Detection Stats",
-            data: [
-              webhookData.total_person_count,
-              webhookData.person_entered,
-              webhookData.person_exited,
-              webhookData.male_count,
-              webhookData.female_count,
-            ],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.6)",
-              "rgba(54, 162, 235, 0.6)",
-              "rgba(255, 206, 86, 0.6)",
-              "rgba(75, 192, 192, 0.6)",
-              "rgba(153, 102, 255, 0.6)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 0.6)",
-              "rgba(54, 162, 235, 0.6)",
-              "rgba(255, 206, 86, 0.6)",
-              "rgba(75, 192, 192, 0.6)",
-              "rgba(153, 102, 255, 0.6)",
-            ],
-            borderWidth: 1,
-          },
-        ],
-      });
-
-      setPieChartData({
-        labels: [
-          "Total Person Count",
-          "Entry Person Count",
-          "Exit Person Count",
-          "Total Male Count",
-          "Total Female Count",
-        ],
-        datasets: [
-          {
-            label: "Categories",
             data: [
               webhookData.total_person_count,
               webhookData.person_entered,
@@ -269,89 +235,87 @@ export default function Dashboard() {
     },
   };
 
-  const pieOptions: ChartOptions<"pie"> = {
+  const lineOptions: ChartOptions<"line"> = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
         position: "top",
       },
     },
+    scales: {
+      x: {
+        beginAtZero: true,
+      },
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+  const sampleBarChartOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+        labels: {
+          color: "rgb(75, 85, 99)", // Tailwind gray-600
+          font: {
+            size: 12,
+            weight: "bold",
+          },
+        },
+      },
+      title: {
+        display: false,
+        text: "Crowd Detection Statistics",
+        color: "rgb(31, 41, 55)", // Tailwind gray-800
+        font: {
+          size: 16,
+          weight: "bold",
+        },
+      },
+      tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        titleColor: "white",
+        bodyColor: "white",
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          color: "rgba(209, 213, 219, 0.5)", // Tailwind gray-300
+        },
+        ticks: {
+          color: "rgb(75, 85, 99)", // Tailwind gray-600
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(209, 213, 219, 0.5)", // Tailwind gray-300
+        },
+        ticks: {
+          color: "rgb(75, 85, 99)", // Tailwind gray-600
+        },
+      },
+    },
   };
 
   return (
-    <>
-      <DashboardLayout>
-        <div className="p-4">
-          <div className="mb-8">
-            <VideoPreview />
-          </div>
-          <div className="w-full px-4">
-            <div className="flex w-full justify-between gap-4 mb-8">
-              <Card className="w-1/2 p-6 shadow-xl rounded-lg bg-white hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  Detection Stats Overview
-                </h2>
-                <Bar
-                  data={barChartData}
-                  options={barChartOptions}
-                  width={600}
-                  height={400}
-                />
-              </Card>
-              <Card className="w-1/2 p-6 shadow-xl rounded-lg bg-white hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  Detection Category Distribution
-                </h2>
-                <Pie data={pieChartData} options={pieOptions} />
-              </Card>
-            </div>
-
-            {/* Tables Section */}
-            <div className="grid grid-cols-1 gap-6 mb-8">
-              {/* Table 1 */}
-              <div className="p-6 shadow-lg rounded-lg bg-white">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                  Person Detection
-                </h3>
-                <Table className="w-full">
-                  {" "}
-                  {/* Added w-full here to make the table take full width */}
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="font-semibold text-gray-600">
-                        Total Person Count
-                      </TableHead>
-                      <TableHead className="font-semibold text-gray-600">
-                        Entry Person Count
-                      </TableHead>
-                      <TableHead className="font-semibold text-gray-600">
-                        Exit Person Count
-                      </TableHead>
-                      <TableHead className="font-semibold text-gray-600">
-                        Total Male Count
-                      </TableHead>
-                      <TableHead className="font-semibold text-gray-600">
-                        Total Female Count
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {tableData.map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{row.total_person_count}</TableCell>
-                        <TableCell>{row.person_entered}</TableCell>
-                        <TableCell>{row.person_exited}</TableCell>
-                        <TableCell>{row.male_count}</TableCell>
-                        <TableCell>{row.female_count}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </DashboardLayout>
-    </>
+    <DashboardLayout>
+      <div className="mb-8">
+        <VideoPreviewWithCharts
+          videos={[
+            "http://localhost:5000/video_feed/0",
+            "http://localhost:5000/video_feed/1",
+            "http://localhost:5000/video_feed/2",
+          ]}
+          ChartData={[barChartData, lineChartData, sampleBarChartData]}
+          ChartOptions={[barChartOptions, lineOptions, sampleBarChartOptions]}
+        />
+      </div>
+    </DashboardLayout>
   );
 }
