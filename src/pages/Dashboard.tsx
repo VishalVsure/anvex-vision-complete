@@ -309,8 +309,8 @@ export default function Dashboard() {
         <VideoPreviewWithCharts
           videos={[
             "http://localhost:5000/video_feed/0",
-            "http://localhost:5000/video_feed/1",
-            "http://localhost:5000/video_feed/2",
+            "fire_detection_.mp4",
+            "Object_Detection.mp4",
           ]}
           ChartData={[barChartData, lineChartData, sampleBarChartData]}
           ChartOptions={[barChartOptions, lineOptions, sampleBarChartOptions]}

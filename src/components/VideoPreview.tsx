@@ -45,7 +45,7 @@ const VideoFeedCard = ({
             autoPlay
             loop
             muted
-            className="w-full h-full object-cover rounded-l-lg"
+            className="w-full h-full object-cover aspect-4/3 rounded-l-lg"
           >
             <source src={videoSrc} type="video/mp4" />
             Your browser does not support the video tag.
@@ -54,7 +54,7 @@ const VideoFeedCard = ({
           <img
             src={videoSrc}
             alt="Thumbnail"
-            className="h-full w-full object-cover rounded-l-lg"
+            className="h-full w-full object-cover rounded-l-lg aspect-4/3"
           />
         )}
       </div>
